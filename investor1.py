@@ -13,6 +13,7 @@ firma_list = ['6','12','16','31']
 paragraf_list = ['4','11','19','24','28']
 súkromné_pozemky = []
 obsadené_políčka = []
+súkromné_firmy = []
 pozemky = [{'cislo': 1,'farba': 'ruzova','cena': 50000,'poplatok': 10000},
            {'cislo': 2,'farba': 'ruzova','cena': 45000,'poplatok': 9000},
            
@@ -141,6 +142,7 @@ def pohyb():
         policko = kocka - a32
         print(f"Teraz si na políčku {policko}.")
         if policko > 1:
+            global stav
             stav = stav + 15000
             print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {stav} kčs.")
             
@@ -166,6 +168,16 @@ def vyber_pozemku():
     print(f'Cena: {pozemky[random_index]["cena"]} kčs')
     print(f'Poplatok za vstup: {pozemky[random_index]["poplatok"]} kčs')
     print(f'Farba: {pozemky[random_index]["farba"]}')
+
+def vyber_firmy():
+    global random_index
+    random_index = random.randrange(len(firmy))
+    while firmy[random_index]["nazov"] in súkromné_firmy:
+        random_index = random.randrange(len(firmy))
+    print(f'Názov: {firmy[random_index]["nazov"]}')
+    print(f'Cena: {firmy[random_index]["cena"]} kčs')
+    print(f'Poplatok za vstup: {firmy[random_index]["poplatok"]} kčs')
+    
 
 def farbahod(farba_filter):
     return [p for p in pozemky if p["farba"] == farba_filter and p["cislo"] in súkromné_pozemky]
@@ -204,22 +216,22 @@ while True:
     if vstup.lower() == "stav":
         print(f"Na účte máš {stav} kčs a tvoj majetok má hodnotu {hodnota_majetku} kčs.")
 
-        if {len(farbahod('ruzova'))} > 0:
-            print(f"Ružových pozemkov máš {Fore.MAGENTA}{len(farbahod('ruzova'))}{Style.RESET_ALL}.")
-        if {len(farbahod('siva'))} > 0:
-            print(f"Sivých pozemkov máš {hex_color('#808080')}{len(farbahod('siva'))}{Style.RESET_ALL}.")
-        if {len(farbahod('oranzova'))} > 0:
-            print(f"Oranžových pozemkov máš {hex_color('#FF7F50')}{len(farbahod('oranzova'))}{Style.RESET_ALL}.")
-        if {len(farbahod('fialova'))} > 0:
-            print(f"Fialových pozemkov máš {hex_color('#4B0082')}{len(farbahod('fialova'))}{Style.RESET_ALL}.")
-        if {len(farbahod('hneda'))} > 0:
-            print(f"Hnedých pozemkov máš {hex_color('#A0522D')}{len(farbahod('hneda'))}{Style.RESET_ALL}.")
-        if {len(farbahod('zlta'))} > 0:
-            print(f"Žltých pozemkov máš {hex_color('#FFFF00')}{len(farbahod('zlta'))}{Style.RESET_ALL}.")
-        if {len(farbahod('modra'))} > 0:
-            print(f"Modrých pozemkov máš {hex_color('#1E90FF')}{len(farbahod('modra'))}{Style.RESET_ALL}.")
-        if {len(farbahod('zelena'))} > 0:
-            print(f"Zelených pozemkov máš {hex_color('#008000')}{len(farbahod('zelena'))}{Style.RESET_ALL}.")
+        if int(len(farbahod('ruzova'))) > 0:
+            print(f"Ružových pozemkov máš {Fore.MAGENTA}{int(len(farbahod('ruzova')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('siva'))) > 0:
+            print(f"Sivých pozemkov máš {hex_color('#808080')}{int(len(farbahod('siva')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('oranzova'))) > 0:
+            print(f"Oranžových pozemkov máš {hex_color('#FF7F50')}{int(len(farbahod('oranzova')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('fialova'))) > 0:
+            print(f"Fialových pozemkov máš {hex_color('#4B0082')}{int(len(farbahod('fialova')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('hneda'))) > 0:
+            print(f"Hnedých pozemkov máš {hex_color('#A0522D')}{int(len(farbahod('hneda')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('zlta'))) > 0:
+            print(f"Žltých pozemkov máš {hex_color('#FFFF00')}{int(len(farbahod('zlta')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('modra'))) > 0:
+            print(f"Modrých pozemkov máš {hex_color('#1E90FF')}{int(len(farbahod('modra')))}{Style.RESET_ALL}.")
+        if int(len(farbahod('zelena'))) > 0:
+            print(f"Zelených pozemkov máš {hex_color('#008000')}{int(len(farbahod('zelena')))}{Style.RESET_ALL}.")
 
         if sef_ruzova == True:
             print("Si ružový šéf.")
@@ -254,8 +266,25 @@ while True:
             else:
                 print("Pozemok nebol zakúpený.")
 
-        #elif typ_policka == "firma":
+        elif typ_policka == "firma":
+            vyber_firmy()
+            if vstup_kupit.lower() == 'y':
+                kupit_firma_policko = input('Na aké políčko chceš firmu kúpiť? ')
+                if kupit_firma_policko in obsadené_políčka:
+                    policko = kupit_firma_policko
+                    print(f'Firma zakúpená na políčko {kupit_firma_policko}.')
+                    stav = stav - (firmy[random_index]["cena"])
+                    hodnota_majetku = hodnota_majetku + (pozemky[random_index]["cena"])
+                    print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
+                    súkromné_firmy.append(firmy[random_index]["nazov"])
 
+                else:
+                    print(kupit_firma_policko)
+                    print(obsadené_políčka)
+                    print("Toto políčko je nedostpné pre Vás.")
+
+            else:
+                print("Firma nebola zakúpená.")
 
         else:
             print("Toto sa nedá zakúpiť.")
@@ -265,4 +294,4 @@ while True:
         typ_policka = (zistenie_typu_policka(policko))
         print(f"Si na políčku {typ_policka}.")
 
-#este treba pridat firmy a paragrafy. taktiez aj sefa a jednotku.
+#este treba pridat paragrafy. taktiez aj sefa a jednotku.
