@@ -1,11 +1,18 @@
 import random
+from colorama import init, Fore, Style
+def hex_color(hex_value):
+    # Convert hex to RGB
+    h = hex_value.lstrip('#')
+    rgb_tuple = tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+    return f"\033[38;2;{rgb_tuple[0]};{rgb_tuple[1]};{rgb_tuple[2]}m"
+
+init()  # Initialize colorama
 
 pozemok_list = ["2",'3','5','7','8','9','10','13','14','15','17','18','20','21','22','23','25','26','27','29','30','32']
 firma_list = ['6','12','16','31']
 paragraf_list = ['4','11','19','24','28']
 súkromné_pozemky = []
 obsadené_políčka = []
-
 pozemky = [{'cislo': 1,'farba': 'ruzova','cena': 50000,'poplatok': 10000},
            {'cislo': 2,'farba': 'ruzova','cena': 45000,'poplatok': 9000},
            
@@ -39,6 +46,81 @@ pozemky = [{'cislo': 1,'farba': 'ruzova','cena': 50000,'poplatok': 10000},
            {'cislo': 24,'farba': 'zelena','cena': 25000,'poplatok': 5000},
            {'cislo': 25,'farba': 'zelena','cena': 30000,'poplatok': 6000},
 ]
+skupiny_firiem = [{'skupina': '1','priplatok': 9000},
+                  {'skupina': '2','priplatok': 9000},
+                  {'skupina': '3','priplatok': 3000},
+                  {'skupina': '4','priplatok': 3000},
+                  {'skupina': '5','priplatok': 9000},
+                  {'skupina': '6','priplatok': 0},
+                  {'skupina': '7','priplatok': 0},
+                  {'skupina': '8','priplatok': 3000},
+                  {'skupina': '9','priplatok': 9000},
+                  {'skupina': '10','priplatok': 3000},
+                  {'skupina': '11','priplatok': 9000},
+                  {'skupina': '12','priplatok': 9000},
+                  {'skupina': '13','priplatok': 0},
+                  {'skupina': '14','priplatok': 9000},
+                  {'skupina': '15','priplatok': 3000}     
+]
+firmy = [{'skupina': '1','nazov': 'reštaurácia','cena': 15000,'poplatok': 7500},
+         {'skupina': '1','nazov': 'kaviareň','cena': 25000,'poplatok': 12500},
+         {'skupina': '1','nazov': 'bar','cena': 5000,'poplatok': 2500},
+
+         {'skupina': '2','nazov': 'čerpacia stanica 1','cena': 15000,'poplatok': 7500},
+         {'skupina': '2','nazov': 'čerpacia stanica 2','cena': 15000,'poplatok': 7500},
+         {'skupina': '2','nazov': 'čerpacia stanica 3','cena': 15000,'poplatok': 7500},
+
+         {'skupina': '3','nazov': 'tlačiareň','cena': 5000,'poplatok': 2500},       
+         {'skupina': '3','nazov': 'vydavateľstvo','cena': 5000,'poplatok': 2500}, 
+
+         {'skupina': '4','nazov': 'letisko 1','cena': 60000,'poplatok': 30000},
+         {'skupina': '4','nazov': 'letisko 2','cena': 50000,'poplatok': 25000},   
+
+         {'skupina': '5','nazov': 'autoservis','cena': 10000,'poplatok': 5000},  
+         {'skupina': '5','nazov': 'mototechna','cena': 20000,'poplatok': 10000},
+         {'skupina': '5','nazov': 'automobilka','cena': 90000,'poplatok': 45000},
+
+         {'skupina': '6','nazov': 'obchodný dom','cena': 50000,'poplatok': 25000},
+
+         {'skupina': '7','nazov': 'elektráreň','cena': 25000,'poplatok': 12500},
+
+         {'skupina': '8','nazov': 'mlyn','cena': 10000,'poplatok': 5000},
+         {'skupina': '8','nazov': 'pekáreň','cena': 50000,'poplatok': 25000},
+
+         {'skupina': '9','nazov': 'diaľnica','cena': 15000,'poplatok': 7500},  
+         {'skupina': '9','nazov': 'doprava','cena': 20000,'poplatok': 10000},
+         {'skupina': '9','nazov': 'metro','cena': 30000,'poplatok': 15000},     
+
+         {'skupina': '10','nazov': 'kasíno','cena': 40000,'poplatok': 20000},
+         {'skupina': '10','nazov': 'zlatníctvo','cena': 90000,'poplatok': 45000},      
+
+         {'skupina': '11','nazov': 'kaderníctvo','cena': 20000,'poplatok': 10000},      
+         {'skupina': '11','nazov': 'kozmetický salón','cena': 30000,'poplatok': 15000},      
+         {'skupina': '11','nazov': 'módny salón','cena': 35000,'poplatok': 17500},
+
+         {'skupina': '12','nazov': 'stajňa 1','cena': 20000,'poplatok': 10000},
+         {'skupina': '12','nazov': 'stajňa 2','cena': 30000,'poplatok': 15000},      
+         {'skupina': '12','nazov': 'dostihová dráha','cena': 60000,'poplatok': 30000},            
+
+         {'skupina': '13','nazov': 'lunapark','cena': 30000,'poplatok': 15000},
+
+         {'skupina': '14','nazov': 'hotel C','cena': 10000,'poplatok': 5000},
+         {'skupina': '14','nazov': 'hotel A','cena': 15000,'poplatok': 7500},
+         {'skupina': '14','nazov': 'hotel B','cena': 20000,'poplatok': 10000},
+
+         {'skupina': '15','nazov': 'lekáreň','cena': 25000,'poplatok': 12500},
+         {'skupina': '15','nazov': 'nemocnica','cena': 50000,'poplatok': 25000},
+         
+]
+
+sef_ruzova = False
+sef_siva = False
+sef_oranzova = False
+sef_fialova = False
+sef_hneda = False
+sef_zlta = False
+sef_modra = False
+sef_zelena = False
 
 stav = 200000
 hodnota_majetku = 0
@@ -60,6 +142,7 @@ def pohyb():
         print(f"Teraz si na políčku {policko}.")
         if policko > 1:
             stav = stav + 15000
+            print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {stav} kčs.")
             
     else:
         policko = policko + kocka
@@ -78,20 +161,83 @@ def zistenie_typu_policka(policko):
 def vyber_pozemku():
     global random_index
     random_index = random.randrange(len(pozemky)-1)
+    while pozemky[random_index]["cislo"] in súkromné_pozemky:
+        random_index = random.randrange(len(pozemky)-1)
     print(f'Cena: {pozemky[random_index]["cena"]} kčs')
     print(f'Poplatok za vstup: {pozemky[random_index]["poplatok"]} kčs')
     print(f'Farba: {pozemky[random_index]["farba"]}')
 
-#def farbahod(farbahod):
-    #return sum(1 for p in pozemky if p["farba"] == farbahod)
+def farbahod(farba_filter):
+    return [p for p in pozemky if p["farba"] == farba_filter and p["cislo"] in súkromné_pozemky]
+
+def kontrola_sefa():
+    if '1' and '2' in súkromné_pozemky:
+        sef_ruzova = True
+        print("Stal si sa ružovým šéfom!")
+    if '3' and '4' and '5' in súkromné_pozemky:
+        sef_siva = True
+        print("Stal si sa sivým šéfom!")
+    if '6' and '7' in súkromné_pozemky:
+        sef_oranzova = True
+        print("Stal si sa oranžovým šéfom!")
+    if '8' and '9' and '10' in súkromné_pozemky:
+        sef_fialova = True
+        print("Stal si sa fialovým šéfom!")
+    if '11' and '12' and '13' in súkromné_pozemky:
+        sef_hneda = True
+        print("Stal si sa hnedým šéfom!")
+    if '14' and '15' and '16' and '17' in súkromné_pozemky:
+        sef_zlta = True
+        print("Stal si sa žltým šéfom!")
+    if '18' and '19' and '20' and '21' in súkromné_pozemky:
+        sef_modra = True
+        print("Stal si sa modrým šéfom!")
+    if '22' and '23' and '24' and '25' in súkromné_pozemky:
+        sef_zelena = True
+        print("Stal si sa zeleným šéfom!")
+
 
 while True:
+    kontrola_sefa()
     vstup = input("> ")
 
     if vstup.lower() == "stav":
         print(f"Na účte máš {stav} kčs a tvoj majetok má hodnotu {hodnota_majetku} kčs.")
-        #print(f"Ružových pozemkov máte {farbahod('ruzova')}, sivých {farbahod('siva')}, oranžových {farbahod('oranzova')}, fialových {farbahod('fialova')}, hnedých {farbahod('hneda')}, žltých {farbahod('zlta')}, modrých {farbahod('modra')} a zelených {farbahod('zelena')}")
 
+        if {len(farbahod('ruzova'))} > 0:
+            print(f"Ružových pozemkov máš {Fore.MAGENTA}{len(farbahod('ruzova'))}{Style.RESET_ALL}.")
+        if {len(farbahod('siva'))} > 0:
+            print(f"Sivých pozemkov máš {hex_color('#808080')}{len(farbahod('siva'))}{Style.RESET_ALL}.")
+        if {len(farbahod('oranzova'))} > 0:
+            print(f"Oranžových pozemkov máš {hex_color('#FF7F50')}{len(farbahod('oranzova'))}{Style.RESET_ALL}.")
+        if {len(farbahod('fialova'))} > 0:
+            print(f"Fialových pozemkov máš {hex_color('#4B0082')}{len(farbahod('fialova'))}{Style.RESET_ALL}.")
+        if {len(farbahod('hneda'))} > 0:
+            print(f"Hnedých pozemkov máš {hex_color('#A0522D')}{len(farbahod('hneda'))}{Style.RESET_ALL}.")
+        if {len(farbahod('zlta'))} > 0:
+            print(f"Žltých pozemkov máš {hex_color('#FFFF00')}{len(farbahod('zlta'))}{Style.RESET_ALL}.")
+        if {len(farbahod('modra'))} > 0:
+            print(f"Modrých pozemkov máš {hex_color('#1E90FF')}{len(farbahod('modra'))}{Style.RESET_ALL}.")
+        if {len(farbahod('zelena'))} > 0:
+            print(f"Zelených pozemkov máš {hex_color('#008000')}{len(farbahod('zelena'))}{Style.RESET_ALL}.")
+
+        if sef_ruzova == True:
+            print("Si ružový šéf.")
+        if sef_siva == True:
+            print("Si sivý šéf.")
+        if sef_oranzova == True:
+            print("Si oranžový šéf.")
+        if sef_fialova == True:
+            print("Si fialový šéf.")
+        if sef_hneda == True:
+            print("Si hnedý šéf.")
+        if sef_zlta == True:
+            print("Si žltý šéf.")
+        if sef_modra == True:
+            print("Si modrý šéf.")
+        if sef_zelena == True:
+            print("Si zelený šéf.")
+        
     elif vstup.lower() == "kupit":
         typ_policka = (zistenie_typu_policka(policko))
         if typ_policka == "pozemok":
@@ -101,7 +247,7 @@ while True:
             if vstup_kupit.lower() == 'y':
                 stav = stav - (pozemky[random_index]["cena"])
                 hodnota_majetku = hodnota_majetku + (pozemky[random_index]["cena"])
-                print(f"Na účte Vám zostalo {stav} kčs.")
+                print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
                 súkromné_pozemky.append(pozemky[random_index]["cislo"])
                 obsadené_políčka.append(policko)
 
@@ -119,4 +265,4 @@ while True:
         typ_policka = (zistenie_typu_policka(policko))
         print(f"Si na políčku {typ_policka}.")
 
-#este treba pridat firmy a paragrafy. taktiez aj sefa a jednotku. a spojazdnit riadky 85 a 93
+#este treba pridat firmy a paragrafy. taktiez aj sefa a jednotku.
