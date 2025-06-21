@@ -113,6 +113,56 @@ firmy = [{'skupina': '1','nazov': 'reštaurácia','cena': 15000,'poplatok': 7500
          {'skupina': '15','nazov': 'nemocnica','cena': 50000,'poplatok': 25000},
          
 ]
+policka_detaily = [
+    {'cislo': '2', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '3', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '5', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '7', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '8', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '9', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '10', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '13', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '14', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '15', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '17', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {'cislo': '18', 'vlastnik': '', 'pozemok': '', 'firma': ''},
+    {"cislo": '20', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '21', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '22', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '23', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '25', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '26', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '27', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '29', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '30', "vlastnik": "", "pozemok": "", "firma": ""},
+    {"cislo": '32', "vlastnik": "", "pozemok": "", "firma": ""}]
+
+def multiply_money(kolko):
+    global stav
+    stav = stav * kolko
+def add_money(kolko):
+    global stav
+    stav = stav + kolko
+
+paragrafy = [{'cislo': '1','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '2','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '3','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '4','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '5','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '6','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '7','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '8','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '9','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '10','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '11','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '12','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '13','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '14','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '15','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '16','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '17','text': '', 'akcia': lambda: add_money(1)},
+            {'cislo': '18','text': '', 'akcia': lambda: add_money(1)},
+]
 
 sef_ruzova = False
 sef_siva = False
@@ -252,36 +302,53 @@ while True:
         
     elif vstup.lower() == "kupit":
         typ_policka = (zistenie_typu_policka(policko))
+
         if typ_policka == "pozemok":
             vyber_pozemku()
+
             vstup_kupit = input("Kúpiť? ")
 
             if vstup_kupit.lower() == 'y':
                 stav = stav - (pozemky[random_index]["cena"])
                 hodnota_majetku = hodnota_majetku + (pozemky[random_index]["cena"])
                 print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
+
                 súkromné_pozemky.append(pozemky[random_index]["cislo"])
                 obsadené_políčka.append(policko)
+
+                for policko_info in policka_detaily:
+                    if policko_info["cislo"] == str(policko):
+                        policko_info["vlastnik"] = "hráč"
+                        policko_info["pozemok"] = pozemky[random_index]["cislo"]
+
 
             else:
                 print("Pozemok nebol zakúpený.")
 
         elif typ_policka == "firma":
             vyber_firmy()
+
             if vstup_kupit.lower() == 'y':
                 kupit_firma_policko = input('Na aké políčko chceš firmu kúpiť? ')
-                if kupit_firma_policko in obsadené_políčka:
+
+                if int(kupit_firma_policko) in obsadené_políčka:
                     policko = kupit_firma_policko
                     print(f'Firma zakúpená na políčko {kupit_firma_policko}.')
+
                     stav = stav - (firmy[random_index]["cena"])
-                    hodnota_majetku = hodnota_majetku + (pozemky[random_index]["cena"])
+                    hodnota_majetku = hodnota_majetku + (firmy[random_index]["cena"])
+                    
                     print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
+
                     súkromné_firmy.append(firmy[random_index]["nazov"])
 
+                    for policko_info in policka_detaily:
+                        if policko_info["cislo"] == str(policko):
+                            policko_info["firma"] = firmy[random_index]["nazov"]
+
+
                 else:
-                    print(kupit_firma_policko)
-                    print(obsadené_políčka)
-                    print("Toto políčko je nedostpné pre Vás.")
+                    print("Toto políčko je nedostupné pre Vás.")
 
             else:
                 print("Firma nebola zakúpená.")
@@ -289,9 +356,12 @@ while True:
         else:
             print("Toto sa nedá zakúpiť.")
 
+    elif vstup.lower() == "sex":
+        print(policka_detaily)
     else:
         pohyb()
         typ_policka = (zistenie_typu_policka(policko))
         print(f"Si na políčku {typ_policka}.")
 
 #este treba pridat paragrafy. taktiez aj sefa a jednotku.
+#vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
