@@ -143,20 +143,34 @@ def multiply_money(kolko):
 def add_money(kolko):
     global stav
     stav = stav + kolko
+def zivel(kolko):
+    global stav
 
-paragrafy = [{'cislo': '1','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '2','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '3','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '4','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '5','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '6','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '7','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '8','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '9','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '10','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '11','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '12','text': '', 'akcia': lambda: add_money(1)},
-            {'cislo': '13','text': '', 'akcia': lambda: add_money(1)},
+    sukrpoz = {p["cislo"] for p in súkromné_pozemky}
+
+    global cenyzivel1
+    cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
+    #################################################################
+    sukrfir = {p["cislo"] for p in súkromné_pozemky}
+
+    global cenyzivel2
+    cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
+        
+    stav = stav - ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+
+paragrafy = [{'cislo': '1','text': 'Obchod sa ti nedarí. Vyplať banke 20000.', 'akcia': lambda: add_money(-20000)},
+            {'cislo': '2','text': 'Daňové priznanie - zaplať banke 10% z hotovosti.', 'akcia': lambda: multiply_money(0.9)},
+            {'cislo': '3','text': 'Zaplať banke 20000.', 'akcia': lambda: add_money(-20000)},
+            {'cislo': '4','text': 'Zaplať banke 25000.', 'akcia': lambda: add_money(-25000)},
+            {'cislo': '5','text': 'Platíš banke clo 1500.', 'akcia': lambda: add_money(-1500)},
+            {'cislo': '6','text': 'Zaplať banke 30000.', 'akcia': lambda: add_money(30000)},
+            {'cislo': '7','text': 'V lotérii si vyhral 100000. Vyplatí ti banka.', 'akcia': lambda: add_money(100000)},
+            {'cislo': '8','text': 'V lotérii si vyhral 50000. Vyplatí ti banka.', 'akcia': lambda: add_money(50000)},
+            {'cislo': '9','text': 'Banka ti vyplatí prémiu 15000.', 'akcia': lambda: add_money(15000)},
+            {'cislo': '10','text': 'V lotérii si vyhral 75000. Vyplatí ti banka.', 'akcia': lambda: add_money(75000)},
+            {'cislo': '11','text': 'V lotérii si vyhral 25000. Vyplatí ti banka.', 'akcia': lambda: add_money(25000)},
+            {'cislo': '12','text': 'Dedíš 20000. Vyplatí ti banka.', 'akcia': lambda: add_money(20000)},
+            {'cislo': '13','text': '- Škoda pri živelnej pohrome. Zaplať bake 20% z ceny pozemkov a firiem.', 'akcia': lambda: zivel(0.2)},
             {'cislo': '14','text': '', 'akcia': lambda: add_money(1)},
             {'cislo': '15','text': '', 'akcia': lambda: add_money(1)},
             {'cislo': '16','text': '', 'akcia': lambda: add_money(1)},
