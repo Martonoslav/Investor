@@ -671,7 +671,7 @@ while True:
     typ_policka = (zistenie_typu_policka(policko))
     print(f"Si na políčku {typ_policka}.")
 
-#este treba pridat paragrafy. taktiez aj sefa a jednotku. STATIE MORE NEVIM VSETKO IDE ALE ZLE
+#pirdat aj sefa a jednotku. STATIE MORE NEVIM VSETKO IDE ALE ZLE. a este kde ma kupit firmu. 
 #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
 
 
