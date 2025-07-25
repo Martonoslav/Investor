@@ -1,8 +1,15 @@
 import random
-from colorama import init, Fore, Style
-from sklearn.tree import DecisionTreeClassifier
 
+from colorama import init, Fore, Style
 init()  # Initialize colorama
+
+print('Loading sklearn module...')
+from sklearn.tree import DecisionTreeClassifier
+print('sklearn module loaded.')
+
+import os
+os.system('cls')
+
 
 sef_ruzova = False
 sef_siva = False
@@ -27,10 +34,10 @@ hodnota_majetku = 0
 
 aistav = 200000
 aihodnota_majetku = 0
+
 aipolicko = 1
 
 policko = 1
-print(f"Začínaš na políčku {policko}.")
 
 pozemok_list = ["2",'3','5','7','8','9','10','13','14','15','17','18','20','21','22','23','25','26','27','29','30','32']
 firma_list = ['6','12','16','31']
@@ -262,13 +269,13 @@ paragrafy = [{'cislo': '1','text': 'Obchod sa ti nedarí. Vyplať banke 20000.',
             #{'cislo': '18','text': '', 'akcia': lambda: add_money(1)}
 ]
 
-def multiply_money(kolko):
+def aimultiply_money(kolko):
     global aistav
     aistav = stav * kolko
-def add_money(kolko):
+def aiadd_money(kolko):
     global aistav
     aistav = stav + kolko
-def zivel(kolko):
+def aizivel(kolko):
     global aistav
 
     sukrpoz = {p["cislo"] for p in ai_pozemky}
@@ -283,14 +290,14 @@ def zivel(kolko):
         
     stav = stav - ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
 
-def vrat_sa_o_policko_spat(kolko):
+def aivrat_sa_o_policko_spat(kolko):
     global aipolicko
     if aipolicko - kolko >= 1:
         aipolicko = aipolicko - kolko
     else:
         aipolicko = aipolicko - kolko + 32
 
-def o_sedem_policok_dopredu():
+def aio_sedem_policok_dopredu():
     global aipolicko
     if aipolicko + 7 <= 32:
         aipolicko = aipolicko + 7
@@ -310,13 +317,13 @@ def o_sedem_policok_dopredu():
     else:
         print("Ten pozemok už vlastníš alebo ho nikto ešte nevlastní.")
 
-def vyplatia():
+def aivyplatia():
     global stav
     stav = stav + 5000
     aistav = aistav - 5000
     print(f"Na účte máš teraz {stav} kčs.")
     
-def unos_alebo():
+def aiunos_alebo():
     odpoved = input("Čo si teda vyberieš? 1/2 ")
     if odpoved == "1":
         global stav
@@ -326,46 +333,70 @@ def unos_alebo():
         global statie
         statie = 3
 
-aiparagrafy = [{'cislo': '1','text': 'Obchod sa ti nedarí. Vyplať banke 20000.', 'akcia': lambda: add_money(-20000)},
-            {'cislo': '2','text': 'Daňové priznanie - zaplať banke 10% z hotovosti.', 'akcia': lambda: multiply_money(0.9)},
-            {'cislo': '3','text': 'Zaplať banke 20000.', 'akcia': lambda: add_money(-20000)},
-            {'cislo': '4','text': 'Zaplať banke 25000.', 'akcia': lambda: add_money(-25000)},
-            {'cislo': '5','text': 'Platíš banke clo 1500.', 'akcia': lambda: add_money(-1500)},
-            {'cislo': '6','text': 'Zaplať banke 30000.', 'akcia': lambda: add_money(30000)},
-            {'cislo': '7','text': 'V lotérii si vyhral 100000. Vyplatí ti banka.', 'akcia': lambda: add_money(100000)},
-            {'cislo': '8','text': 'V lotérii si vyhral 50000. Vyplatí ti banka.', 'akcia': lambda: add_money(50000)},
-            {'cislo': '9','text': 'Banka ti vyplatí prémiu 15000.', 'akcia': lambda: add_money(15000)},
-            {'cislo': '10','text': 'V lotérii si vyhral 75000. Vyplatí ti banka.', 'akcia': lambda: add_money(75000)},
-            {'cislo': '11','text': 'V lotérii si vyhral 25000. Vyplatí ti banka.', 'akcia': lambda: add_money(25000)},
-            {'cislo': '12','text': 'Dedíš 20000. Vyplatí ti banka.', 'akcia': lambda: add_money(20000)},
-            {'cislo': '13','text': '- Škoda pri živelnej pohrome. Zaplať bake 20% z ceny pozemkov a firiem.', 'akcia': lambda: zivel(0.2)},
-            {'cislo': '14','text': 'Vráť sa o 3 políčka späť.', 'akcia': vrat_sa_o_policko_spat(3)},
-            {'cislo': '15','text': 'Choď o 7 políčok dopredu. Ak tento pozemok niekto vlastní, daruje ti ho.', 'akcia': lambda: o_sedem_policok_dopredu()},
-            {'cislo': '16','text': 'Spoluhráči - obchodníci ti vyplatia dlžobu po 5000 kčs', 'akcia': lambda: vyplatia()},
-            {'cislo': '17','text': 'Únos. Výkupné 15000 alebo 3 kolá stoj.', 'akcia': lambda: unos_alebo()},
+aiparagrafy = [{'cislo': '1','text': 'Obchod sa ti nedarí. Vyplať banke 20000.', 'akcia': lambda: aiadd_money(-20000)},
+            {'cislo': '2','text': 'Daňové priznanie - zaplať banke 10% z hotovosti.', 'akcia': lambda: aimultiply_money(0.9)},
+            {'cislo': '3','text': 'Zaplať banke 20000.', 'akcia': lambda: aiadd_money(-20000)},
+            {'cislo': '4','text': 'Zaplať banke 25000.', 'akcia': lambda: aiadd_money(-25000)},
+            {'cislo': '5','text': 'Platíš banke clo 1500.', 'akcia': lambda: aiadd_money(-1500)},
+            {'cislo': '6','text': 'Zaplať banke 30000.', 'akcia': lambda: aiadd_money(30000)},
+            {'cislo': '7','text': 'V lotérii si vyhral 100000. Vyplatí ti banka.', 'akcia': lambda: aiadd_money(100000)},
+            {'cislo': '8','text': 'V lotérii si vyhral 50000. Vyplatí ti banka.', 'akcia': lambda: aiadd_money(50000)},
+            {'cislo': '9','text': 'Banka ti vyplatí prémiu 15000.', 'akcia': lambda: aiadd_money(15000)},
+            {'cislo': '10','text': 'V lotérii si vyhral 75000. Vyplatí ti banka.', 'akcia': lambda: aiadd_money(75000)},
+            {'cislo': '11','text': 'V lotérii si vyhral 25000. Vyplatí ti banka.', 'akcia': lambda: aiadd_money(25000)},
+            {'cislo': '12','text': 'Dedíš 20000. Vyplatí ti banka.', 'akcia': lambda: aiadd_money(20000)},
+            {'cislo': '13','text': '- Škoda pri živelnej pohrome. Zaplať bake 20% z ceny pozemkov a firiem.', 'akcia': lambda: aizivel(0.2)},
+            {'cislo': '14','text': 'Vráť sa o 3 políčka späť.', 'akcia': aivrat_sa_o_policko_spat(3)},
+            {'cislo': '15','text': 'Choď o 7 políčok dopredu. Ak tento pozemok niekto vlastní, daruje ti ho.', 'akcia': lambda: aio_sedem_policok_dopredu()},
+            {'cislo': '16','text': 'Spoluhráči - obchodníci ti vyplatia dlžobu po 5000 kčs', 'akcia': lambda: aivyplatia()},
+            {'cislo': '17','text': 'Únos. Výkupné 15000 alebo 3 kolá stoj.', 'akcia': lambda: aiunos_alebo()},
             #{'cislo': '18','text': '', 'akcia': lambda: add_money(1)}
 ]
 
 def pohyb():
-    kocka = random.randint(1,6)
-
-    while kocka == 6:
-        kocka = kocka + random.randint(1,6)
-
     global policko
+    kocka = 0
+    while True:
+        hod = random.randint(1, 6)
+        kocka += hod
+        if hod != 6:
+            break
+        print('Hráč hodil 6')
+
     policko_a_kocka = policko + kocka
     if policko_a_kocka > 32:
         a32 = 32 - policko
         policko = kocka - a32
-        print(f"Teraz si na políčku {policko}.")
         if policko > 1:
             global stav
             stav = stav + 15000
             print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {stav} kčs.")
-            
     else:
         policko = policko + kocka
-        print(f"Teraz si na políčku {policko}.")
+    print(f"Teraz si na políčku {policko}.")
+
+def aipohyb():
+    global aipolicko
+    kocka = 0
+    while True:
+        hod = random.randint(1, 6)
+        kocka += hod
+        if hod != 6:
+            break
+        print('AI hodilo 6')
+
+    policko_a_kocka = aipolicko + kocka
+    if policko_a_kocka > 32:
+        a32 = 32 - aipolicko
+        aipolicko = kocka - a32
+        print(f"Teraz si na políčku {aipolicko}. 1")
+        if aipolicko > 1:
+            global aistav
+            aistav = aistav + 15000
+            print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {aistav} kčs.")
+    else:
+        aipolicko = aipolicko + kocka
+        print(f"Teraz si na políčku {aipolicko}. 2")
 
 def zistenie_typu_policka(policko):
     if str(policko) in pozemok_list:
@@ -398,8 +429,9 @@ def vyber_firmy():
 def vyber_paragrafu():
     global random_index
     random_index = random.randrange(len(paragrafy))
+    print(f'paragraf je {random_index}')
     print(paragrafy[random_index]["text"])
-    paragrafy(random_index)["akcia"]()
+    paragrafy[random_index]["akcia"]()
 
 def farbahod(farba_filter):
     return [p for p in pozemky if p["farba"] == farba_filter and p["cislo"] in hracove_pozemky]
@@ -477,10 +509,11 @@ X = [
 [49837,43063,3],
 [37315,11458,1],
 [79647,40967,4],
-[25106,24647,4]
+[25106,24647,4],
+[184000,40000,4]
 ]
 # Výstupy: 1 = kúpiť, 0 = nekúpiť
-y = [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1,0,1,0,0]
+y = [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1,0,1,0,0,1]
 
 model1 = DecisionTreeClassifier()
 model1.fit(X, y)
@@ -489,52 +522,58 @@ def aivyber_paragrafu():
     global random_index
     random_index = random.randrange(len(aiparagrafy))
     aiparagrafy(random_index)["akcia"]()
+#!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!##
+aipolicko = 1
+aipohyb()
+os.system('cls')
+policko = 1
+pohyb()
+
 
 while True:
     print(Fore.WHITE)
+    print(f'Teraz si na policku {policko} ktoré je {zistenie_typu_policka(policko)}.')
+    print(f"Na účte máš {stav} kčs a tvoj majetok má hodnotu {hodnota_majetku} kčs.")
+
+    if int(len(farbahod('ruzova'))) > 0:
+        print(f"Ružových pozemkov máš {int(len(farbahod('ruzova')))}.")
+    if int(len(farbahod('siva'))) > 0:
+        print(f"Sivých pozemkov máš {int(len(farbahod('siva')))}.")
+    if int(len(farbahod('oranzova'))) > 0:
+        print(f"Oranžových pozemkov máš {int(len(farbahod('oranzova')))}.")
+    if int(len(farbahod('fialova'))) > 0:
+        print(f"Fialových pozemkov máš {int(len(farbahod('fialova')))}.")
+    if int(len(farbahod('hneda'))) > 0:
+        print(f"Hnedých pozemkov máš {int(len(farbahod('hneda')))}.")
+    if int(len(farbahod('zlta'))) > 0:
+        print(f"Žltých pozemkov máš {int(len(farbahod('zlta')))}.")
+    if int(len(farbahod('modra'))) > 0:
+        print(f"Modrých pozemkov máš {int(len(farbahod('modra')))}.")
+    if int(len(farbahod('zelena'))) > 0:
+        print(f"Zelených pozemkov máš {int(len(farbahod('zelena')))}.")
+
+    if sef_ruzova == True:
+        print("Si ružový šéf.")
+    if sef_siva == True:
+        print("Si sivý šéf.")
+    if sef_oranzova == True:
+        print("Si oranžový šéf.")
+    if sef_fialova == True:
+        print("Si fialový šéf.")
+    if sef_hneda == True:
+        print("Si hnedý šéf.")
+    if sef_zlta == True:
+        print("Si žltý šéf.")
+    if sef_modra == True:
+        print("Si modrý šéf.")
+    if sef_zelena == True:
+        print("Si zelený šéf.")
     kontrola_sefa()
     vstup = input("> ")
 
     if zistenie_typu_policka(policko) == 'paragraf':
         vyber_paragrafu()
-
-    if vstup.lower() == "stav":
-        print(f"Na účte máš {stav} kčs a tvoj majetok má hodnotu {hodnota_majetku} kčs.")
-
-        if int(len(farbahod('ruzova'))) > 0:
-            print(f"Ružových pozemkov máš {int(len(farbahod('ruzova')))}.")
-        if int(len(farbahod('siva'))) > 0:
-            print(f"Sivých pozemkov máš {int(len(farbahod('siva')))}.")
-        if int(len(farbahod('oranzova'))) > 0:
-            print(f"Oranžových pozemkov máš {int(len(farbahod('oranzova')))}.")
-        if int(len(farbahod('fialova'))) > 0:
-            print(f"Fialových pozemkov máš {int(len(farbahod('fialova')))}.")
-        if int(len(farbahod('hneda'))) > 0:
-            print(f"Hnedých pozemkov máš {int(len(farbahod('hneda')))}.")
-        if int(len(farbahod('zlta'))) > 0:
-            print(f"Žltých pozemkov máš {int(len(farbahod('zlta')))}.")
-        if int(len(farbahod('modra'))) > 0:
-            print(f"Modrých pozemkov máš {int(len(farbahod('modra')))}.")
-        if int(len(farbahod('zelena'))) > 0:
-            print(f"Zelených pozemkov máš {int(len(farbahod('zelena')))}.")
-
-        if sef_ruzova == True:
-            print("Si ružový šéf.")
-        if sef_siva == True:
-            print("Si sivý šéf.")
-        if sef_oranzova == True:
-            print("Si oranžový šéf.")
-        if sef_fialova == True:
-            print("Si fialový šéf.")
-        if sef_hneda == True:
-            print("Si hnedý šéf.")
-        if sef_zlta == True:
-            print("Si žltý šéf.")
-        if sef_modra == True:
-            print("Si modrý šéf.")
-        if sef_zelena == True:
-            print("Si zelený šéf.")
-        
+ 
     elif vstup.lower() == "kupit":
         typ_policka = (zistenie_typu_policka(policko))
 
@@ -594,8 +633,12 @@ while True:
     elif vstup.lower() == "sex":
         print(policka_detaily)
 
-        
-##############################################################################################################################################################################################################################
+    pohyb()
+    typ_policka = (zistenie_typu_policka(policko))
+    print(f"Si na políčku {typ_policka}.")
+
+
+
     print(Fore.RED)
     AIkontrola_sefa()
 
@@ -661,17 +704,12 @@ while True:
     else:
         print("Toto sa nedá zakúpiť.")
 
-
-    
-    pohyb()
+    aipohyb()
     typ_policka = (zistenie_typu_policka(policko))
-    print(f"Si na políčku {typ_policka}.")
-##############################################################################################################################################################################################################################
-    pohyb()
-    typ_policka = (zistenie_typu_policka(policko))
-    print(f"Si na políčku {typ_policka}.")
+    print(f"Je na políčku {typ_policka}.")
 
-#pirdat aj sefa a jednotku. STATIE MORE NEVIM VSETKO IDE ALE ZLE. a este kde ma kupit firmu. 
+
+#pirdat aj sefa a jednotku. STATIE MORE NEVIM VSETKO IDE ALE ZLE. a este kde ma kupit firmu. a ked stupis na cudzie policko tak volaco. 
 #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
 
 
