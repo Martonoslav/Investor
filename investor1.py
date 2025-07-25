@@ -45,6 +45,7 @@ paragraf_list = ['4','11','19','24','28']
 súkromné_pozemky = []
 obsadené_políčka = []
 súkromné_firmy = []
+policko_info = []
 
 hracove_pozemky = []
 hracove_políčka = []
@@ -528,10 +529,16 @@ aipohyb()
 os.system('cls')
 policko = 1
 pohyb()
-
+kvarteto = False
 
 while True:
-    print(Fore.WHITE)
+    print(Fore.WHITE) 
+    if kvarteto == True:
+        pohyb()
+        typ_policka = (zistenie_typu_policka(policko))
+    else:
+        pass
+
     print(f'Teraz si na policku {policko} ktoré je {zistenie_typu_policka(policko)}.')
     print(f"Na účte máš {stav} kčs a tvoj majetok má hodnotu {hodnota_majetku} kčs.")
 
@@ -633,11 +640,7 @@ while True:
     elif vstup.lower() == "sex":
         print(policka_detaily)
 
-    pohyb()
-    typ_policka = (zistenie_typu_policka(policko))
-    print(f"Si na políčku {typ_policka}.")
-
-
+    kvarteto = True
 
     print(Fore.RED)
     AIkontrola_sefa()
@@ -711,5 +714,4 @@ while True:
 
 #pirdat aj sefa a jednotku. STATIE MORE NEVIM VSETKO IDE ALE ZLE. a este kde ma kupit firmu. a ked stupis na cudzie policko tak volaco. 
 #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
-
 
