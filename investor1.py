@@ -364,7 +364,7 @@ def pohyb():
             break
         print('Hráč hodil 6')
 
-    policko_a_kocka = policko + kocka
+    policko_a_kocka = int(policko) + kocka
     if policko_a_kocka > 32:
         a32 = 32 - policko
         policko = kocka - a32
@@ -373,7 +373,7 @@ def pohyb():
             stav = stav + 15000
             print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {stav} kčs.")
     else:
-        policko = policko + kocka
+        policko = int(policko) + kocka
     print(f"Teraz si na políčku {policko}.")
 
 def aipohyb():
@@ -390,14 +390,14 @@ def aipohyb():
     if policko_a_kocka > 32:
         a32 = 32 - aipolicko
         aipolicko = kocka - a32
-        print(f"Teraz si na políčku {aipolicko}. 1")
+        print(f"Teraz je na políčku {aipolicko}. 1")
         if aipolicko > 1:
             global aistav
             aistav = aistav + 15000
             print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {aistav} kčs.")
     else:
         aipolicko = aipolicko + kocka
-        print(f"Teraz si na políčku {aipolicko}. 2")
+        print(f"Teraz je na políčku {aipolicko}. 2")
 
 def zistenie_typu_policka(policko):
     if str(policko) in pozemok_list:
@@ -522,7 +522,9 @@ model1.fit(X, y)
 def aivyber_paragrafu():
     global random_index
     random_index = random.randrange(len(aiparagrafy))
-    aiparagrafy(random_index)["akcia"]()
+    print(f'paragraf má {random_index}')
+    print(aiparagrafy[random_index]["text"])
+    aiparagrafy[random_index]["akcia"]()
 #!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!##
 aipolicko = 1
 aipohyb()
@@ -645,13 +647,13 @@ while True:
     print(Fore.RED)
     AIkontrola_sefa()
 
-    typ_policka = (zistenie_typu_policka(policko))
-
+    typ_policka = (zistenie_typu_policka(aipolicko))
+    print(f"AI je na políčku {aipolicko} ktoré je {typ_policka}.")
     if typ_policka == "pozemok":
         vyber_pozemku()
-        aisituacia = [[stav, pozemky[random_index]["cena"], sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))]]
+        aisituacia = [[aistav, pozemky[random_index]["cena"], sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))]]
         rozhodnutie = model1.predict(aisituacia)[0]
-        print(f'Stav: {stav}, Cena: {pozemky[random_index]["cena"]}, ešte: {sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))}')
+        print(f'Stav: {aistav}, Cena: {pozemky[random_index]["cena"]}, ešte: {sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))}')
         print("kupit" if rozhodnutie else "preskocit")
 
         if rozhodnutie:
@@ -674,22 +676,26 @@ while True:
     elif typ_policka == "firma":
         vyber_firmy()
 
-        aisituacia = [[stav, pozemky[random_index]["cena"], sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))]]
+        aisituacia = [[aistav, pozemky[random_index]["cena"], sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))]]
         rozhodnutie = model1.predict(aisituacia)[0]
-        print(f'Stav: {stav}, Cena: {pozemky[random_index]["cena"]}, ešte: {sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))}')
+        print(f'Stav: {aistav}, Cena: {pozemky[random_index]["cena"]}, ešte: {sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))}')
         print("kupit" if rozhodnutie else "preskocit")
 
         if rozhodnutie:
-            kupit_firma_policko = input('Na aké políčko chceš firmu kúpiť? ')
+            kupit_firma_policko_ai = ([p["cislo"] for p in policka_detaily if p["vlastnik"] == "ai" and p["firma"] == ""])
+            if kupit_firma_policko_ai == "": 
+                pass
+            else:
+                kupit_firma_policko = random.choice(kupit_firma_policko_ai)
 
             if int(kupit_firma_policko) in obsadené_políčka and ai_políčka:
                 policko = kupit_firma_policko
                 print(f'Firma zakúpená na políčko {kupit_firma_policko}.')
 
-                stav = stav - (firmy[random_index]["cena"])
-                hodnota_majetku = hodnota_majetku + (firmy[random_index]["cena"])
+                aistav = aistav - (firmy[random_index]["cena"])
+                aihodnota_majetku = aihodnota_majetku + (firmy[random_index]["cena"])
                 
-                print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
+                print(f"Na účte mu zostalo {aistav} kčs a jeho majetok má teraz hodnotu {aihodnota_majetku} kčs.")
 
                 súkromné_firmy.append(firmy[random_index]["nazov"])
 
@@ -704,6 +710,8 @@ while True:
         else:
             print("Firma nebola zakúpená.")
 
+    elif typ_policka == "paragraf":
+        aivyber_paragrafu()
     else:
         print("Toto sa nedá zakúpiť.")
 
@@ -712,6 +720,5 @@ while True:
     print(f"Je na políčku {typ_policka}.")
 
 
-#pirdat aj sefa a jednotku. STATIE MORE NEVIM VSETKO IDE ALE ZLE. a este kde ma kupit firmu. a ked stupis na cudzie policko tak volaco. 
+#pirdat aj sefa a jednotku. STATIE . a ked stupis na cudzie policko tak volaco. 
 #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
-
