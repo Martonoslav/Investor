@@ -236,8 +236,9 @@ def o_sedem_policok_dopredu():
         print("Ten pozemok už vlastníš alebo ho nikto ešte nevlastní.")
 def vyplatia():
     global stav
+    global aistav
     stav = stav + 5000
-    aistav = aistav - 5000
+    aistav -= 5000
     print(f"Na účte máš teraz {stav} kčs.")
 
 def unos_alebo():
@@ -320,8 +321,9 @@ def aio_sedem_policok_dopredu():
 
 def aivyplatia():
     global stav
-    stav = stav + 5000
-    aistav = aistav - 5000
+    global aistav
+    stav += 5000
+    aistav -= 5000
     print(f"Na účte máš teraz {stav} kčs.")
     
 def aiunos_alebo():
@@ -544,6 +546,10 @@ while True:
     print(f'Teraz si na policku {policko} ktoré je {zistenie_typu_policka(policko)}.')
     print(f"Na účte máš {stav} kčs a tvoj majetok má hodnotu {hodnota_majetku} kčs.")
 
+    if policko in ai_políčka:
+        hodnoita = int(policka_detaily[policko - 1]['pozemok'])
+        stav -= pozemky[hodnoita - 1]['poplatok']
+
     if int(len(farbahod('ruzova'))) > 0:
         print(f"Ružových pozemkov máš {int(len(farbahod('ruzova')))}.")
     if int(len(farbahod('siva'))) > 0:
@@ -615,7 +621,6 @@ while True:
                 kupit_firma_policko = input('Na aké políčko chceš firmu kúpiť? ')
 
                 if int(kupit_firma_policko) in obsadené_políčka:
-                    policko = kupit_firma_policko
                     print(f'Firma zakúpená na políčko {kupit_firma_policko}.')
 
                     stav = stav - (firmy[random_index]["cena"])
@@ -645,7 +650,11 @@ while True:
     kvarteto = True
 
     print(Fore.RED)
+    aipohyb()
     AIkontrola_sefa()
+
+    if aipolicko in hracove_políčka:
+        aistav -= pozemky[(policka_detaily[aipolicko - 1]['pozemok']) - 1]['poplatok']
 
     typ_policka = (zistenie_typu_policka(aipolicko))
     print(f"AI je na políčku {aipolicko} ktoré je {typ_policka}.")
@@ -715,10 +724,5 @@ while True:
     else:
         print("Toto sa nedá zakúpiť.")
 
-    aipohyb()
-    typ_policka = (zistenie_typu_policka(policko))
-    print(f"Je na políčku {typ_policka}.")
-
-
-#pirdat aj sefa a jednotku. STATIE . a ked stupis na cudzie policko tak volaco. 
+#pirdat aj sefa a jednotku. STATIE . 
 #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
