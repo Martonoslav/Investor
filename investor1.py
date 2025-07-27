@@ -548,7 +548,10 @@ while True:
 
     if policko in ai_políčka:
         hodnoita = int(policka_detaily[policko - 1]['pozemok'])
-        stav -= pozemky[hodnoita - 1]['poplatok']
+        hodnotastupenia = pozemky[hodnoita - 1]['poplatok']
+        stav -= hodnotastupenia
+        print(f'Platíš AI za vstúpenie na jeho pozemok {hodnotastupenia}.')
+        aistav += hodnotastupenia
 
     if int(len(farbahod('ruzova'))) > 0:
         print(f"Ružových pozemkov máš {int(len(farbahod('ruzova')))}.")
@@ -590,59 +593,62 @@ while True:
         vyber_paragrafu()
  
     elif vstup.lower() == "kupit":
-        typ_policka = (zistenie_typu_policka(policko))
+        if policko not in ai_políčka:
+            typ_policka = (zistenie_typu_policka(policko))
 
-        if typ_policka == "pozemok":
-            vyber_pozemku()
+            if typ_policka == "pozemok":
+                vyber_pozemku()
 
-            vstup_kupit = input("Kúpiť? ")
+                vstup_kupit = input("Kúpiť? ")
 
-            if vstup_kupit.lower() == 'y':
-                stav = stav - (pozemky[random_index]["cena"])
-                hodnota_majetku = hodnota_majetku + (pozemky[random_index]["cena"])
-                print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
-
-                súkromné_pozemky.append(pozemky[random_index]["cislo"])
-                obsadené_políčka.append(policko)
-
-                for policko_info in policka_detaily:
-                    if policko_info["cislo"] == str(policko):
-                        policko_info["vlastnik"] = "hráč"
-                        policko_info["pozemok"] = pozemky[random_index]["cislo"]
-
-
-            else:
-                print("Pozemok nebol zakúpený.")
-
-        elif typ_policka == "firma":
-            vyber_firmy()
-
-            if vstup_kupit.lower() == 'y':
-                kupit_firma_policko = input('Na aké políčko chceš firmu kúpiť? ')
-
-                if int(kupit_firma_policko) in obsadené_políčka:
-                    print(f'Firma zakúpená na políčko {kupit_firma_policko}.')
-
-                    stav = stav - (firmy[random_index]["cena"])
-                    hodnota_majetku = hodnota_majetku + (firmy[random_index]["cena"])
-                    
+                if vstup_kupit.lower() == 'y':
+                    stav = stav - (pozemky[random_index]["cena"])
+                    hodnota_majetku = hodnota_majetku + (pozemky[random_index]["cena"])
                     print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
 
-                    súkromné_firmy.append(firmy[random_index]["nazov"])
+                    súkromné_pozemky.append(pozemky[random_index]["cislo"])
+                    obsadené_políčka.append(policko)
 
                     for policko_info in policka_detaily:
                         if policko_info["cislo"] == str(policko):
-                            policko_info["firma"] = firmy[random_index]["nazov"]
+                            policko_info["vlastnik"] = "hráč"
+                            policko_info["pozemok"] = pozemky[random_index]["cislo"]
 
 
                 else:
-                    print("Toto políčko je nedostupné pre Vás.")
+                    print("Pozemok nebol zakúpený.")
+
+            elif typ_policka == "firma":
+                vyber_firmy()
+
+                if vstup_kupit.lower() == 'y':
+                    kupit_firma_policko = input('Na aké políčko chceš firmu kúpiť? ')
+
+                    if int(kupit_firma_policko) in obsadené_políčka:
+                        print(f'Firma zakúpená na políčko {kupit_firma_policko}.')
+
+                        stav = stav - (firmy[random_index]["cena"])
+                        hodnota_majetku = hodnota_majetku + (firmy[random_index]["cena"])
+                        
+                        print(f"Na účte Vám zostalo {stav} kčs a Váš majetok má teraz hodnotu {hodnota_majetku} kčs.")
+
+                        súkromné_firmy.append(firmy[random_index]["nazov"])
+
+                        for policko_info in policka_detaily:
+                            if policko_info["cislo"] == str(policko):
+                                policko_info["firma"] = firmy[random_index]["nazov"]
+
+
+                    else:
+                        print("Toto políčko je nedostupné pre Vás.")
+
+                else:
+                    print("Firma nebola zakúpená.")
 
             else:
-                print("Firma nebola zakúpená.")
-
+                print("Toto sa nedá zakúpiť.")
         else:
-            print("Toto sa nedá zakúpiť.")
+            print('Toto políčko už vlastní niekto iný.')
 
     elif vstup.lower() == "sex":
         print(policka_detaily)
@@ -654,33 +660,40 @@ while True:
     AIkontrola_sefa()
 
     if aipolicko in hracove_políčka:
-        aistav -= pozemky[(policka_detaily[aipolicko - 1]['pozemok']) - 1]['poplatok']
+        hodnoita = int(policka_detaily[aipolicko - 1]['pozemok'])
+        hodnotastupenia = pozemky[hodnoita - 1]['poplatok']
+        aistav -= hodnotastupenia
+        print(f'AI ti stúpilo na pozemok. Zaplatilo ti {hodnotastupenia}.')
+        stav += hodnotastupenia
 
     typ_policka = (zistenie_typu_policka(aipolicko))
     print(f"AI je na políčku {aipolicko} ktoré je {typ_policka}.")
     if typ_policka == "pozemok":
-        vyber_pozemku()
-        aisituacia = [[aistav, pozemky[random_index]["cena"], sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))]]
-        rozhodnutie = model1.predict(aisituacia)[0]
-        print(f'Stav: {aistav}, Cena: {pozemky[random_index]["cena"]}, ešte: {sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))}')
-        print("kupit" if rozhodnutie else "preskocit")
+        if aipolicko not in hracove_políčka:
+            vyber_pozemku()
+            aisituacia = [[aistav, pozemky[random_index]["cena"], sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))]]
+            rozhodnutie = model1.predict(aisituacia)[0]
+            print(f'Stav: {aistav}, Cena: {pozemky[random_index]["cena"]}, ešte: {sum(1 for p in pozemky if p["farba"] == pozemky[random_index]["farba"]) - int(len(farbahodai(pozemky[random_index]["farba"])))}')
+            print("kupit" if rozhodnutie else "preskocit")
 
-        if rozhodnutie:
-            aistav = stav - (pozemky[random_index]["cena"])
-            aihodnota_majetku = aihodnota_majetku + (pozemky[random_index]["cena"])
-            print(f"Na účte Vám zostalo {aistav} kčs a Váš majetok má teraz hodnotu {aihodnota_majetku} kčs.")
+            if rozhodnutie:
+                aistav = stav - (pozemky[random_index]["cena"])
+                aihodnota_majetku = aihodnota_majetku + (pozemky[random_index]["cena"])
+                print(f"Na účte Vám zostalo {aistav} kčs a Váš majetok má teraz hodnotu {aihodnota_majetku} kčs.")
 
-            ai_pozemky.append(pozemky[random_index]["cislo"])
-            ai_políčka.append(aipolicko)
+                ai_pozemky.append(pozemky[random_index]["cislo"])
+                ai_políčka.append(aipolicko)
 
-            for policko_info in policka_detaily:
-                if policko_info["cislo"] == str(policko):
-                    policko_info["vlastnik"] = "ai"
-                    policko_info["pozemok"] = pozemky[random_index]["cislo"]
+                for policko_info in policka_detaily:
+                    if policko_info["cislo"] == str(policko):
+                        policko_info["vlastnik"] = "ai"
+                        policko_info["pozemok"] = pozemky[random_index]["cislo"]
 
 
+            else:
+                print("Pozemok nebol zakúpený.")
         else:
-            print("Pozemok nebol zakúpený.")
+            print('Toto políčko už vlastní niekto iný.')
 
     elif typ_policka == "firma":
         vyber_firmy()
@@ -692,7 +705,7 @@ while True:
 
         if rozhodnutie:
             kupit_firma_policko_ai = ([p["cislo"] for p in policka_detaily if p["vlastnik"] == "ai" and p["firma"] == ""])
-            if kupit_firma_policko_ai == "": 
+            if kupit_firma_policko_ai == []: 
                 pass
             else:
                 kupit_firma_policko = random.choice(kupit_firma_policko_ai)
