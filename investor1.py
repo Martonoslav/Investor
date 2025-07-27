@@ -821,5 +821,4 @@ while True:
     else:
         print("Toto sa nedá zakúpiť.")
 
-#pirdat aj sefa a jednotku. STATIE . 
-#vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
+#pirdat jednotku. STATIE . #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
