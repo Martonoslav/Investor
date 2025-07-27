@@ -441,28 +441,28 @@ def farbahod(farba_filter):
 
 def kontrola_sefa():
     global sef_ruzova, sef_siva, sef_oranzova, sef_fialova, sef_hneda, sef_zlta, sef_modra, sef_zelena  
-    if '1' and '2' in súkromné_pozemky:
+    if '1' and '2' in hracove_pozemky:
         sef_ruzova = True
         print("Stal si sa ružovým šéfom!")
-    if '3' and '4' and '5' in súkromné_pozemky:
+    if '3' and '4' and '5' in hracove_pozemky:
         sef_siva = True
         print("Stal si sa sivým šéfom!")
-    if '6' and '7' in súkromné_pozemky:
+    if '6' and '7' in hracove_pozemky:
         sef_oranzova = True
         print("Stal si sa oranžovým šéfom!")
-    if '8' and '9' and '10' in súkromné_pozemky:
+    if '8' and '9' and '10' in hracove_pozemky:
         sef_fialova = True
         print("Stal si sa fialovým šéfom!")
-    if '11' and '12' and '13' in súkromné_pozemky:
+    if '11' and '12' and '13' in hracove_pozemky:
         sef_hneda = True
         print("Stal si sa hnedým šéfom!")
-    if '14' and '15' and '16' and '17' in súkromné_pozemky:
+    if '14' and '15' and '16' and '17' in hracove_pozemky:
         sef_zlta = True
         print("Stal si sa žltým šéfom!")
-    if '18' and '19' and '20' and '21' in súkromné_pozemky:
+    if '18' and '19' and '20' and '21' in hracove_pozemky:
         sef_modra = True
         print("Stal si sa modrým šéfom!")
-    if '22' and '23' and '24' and '25' in súkromné_pozemky:
+    if '22' and '23' and '24' and '25' in hracove_pozemky:
         sef_zelena = True
         print("Stal si sa zeleným šéfom!")
 
