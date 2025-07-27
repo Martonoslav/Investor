@@ -370,7 +370,7 @@ def pohyb():
     if policko_a_kocka > 32:
         a32 = 32 - policko
         policko = kocka - a32
-        if policko > 1:
+        if policko >= 2:
             global stav
             stav = stav + 15000
             print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {stav} kčs.")
@@ -393,7 +393,7 @@ def aipohyb():
         a32 = 32 - aipolicko
         aipolicko = kocka - a32
         print(f"Teraz je na políčku {aipolicko}. 1")
-        if aipolicko > 1:
+        if aipolicko >= 2:
             global aistav
             aistav = aistav + 15000
             print(f"Získal si od banky úroky vo výške 15000 kčs. Na účte máš teraz {aistav} kčs.")
