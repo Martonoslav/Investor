@@ -850,3 +850,4 @@ while True:
         hracove_statie -= 1
         pass
 
+#dokoncit unos a pridat trading a dokoncit vobec hru ked precitas si pravidla a nic ti v hre nebude chybat a urobit z nej scalable verziu pre mod s ai a aj coop. najlepsie aby si len hrac zadal pocet opponentov
