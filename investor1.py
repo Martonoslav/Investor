@@ -548,11 +548,53 @@ while True:
 
     if policko in ai_políčka:
         hodnoita = int(policka_detaily[policko - 1]['pozemok'])
-        hodnotastupenia = pozemky[hodnoita - 1]['poplatok']
-        stav -= hodnotastupenia
-        print(f'Platíš AI za vstúpenie na jeho pozemok {hodnotastupenia}.')
-        aistav += hodnotastupenia
+        hodnotavstupenia = pozemky[hodnoita - 1]['poplatok']
+        stav -= hodnotavstupenia
+        aistav += hodnotavstupenia
 
+        if [pozemky][policko -1]['farba'] == 'ruzova':
+            if aisef_ruzova == True:
+                stav -= 2000
+                aistav += 2000
+                hodnotavstupenia += 2000
+        if [pozemky][policko -1]['farba'] == 'oranzova':
+            if aisef_oranzova == True:
+                stav -= 2000
+                aistav += 2000
+                hodnotavstupenia += 2000
+        if [pozemky][policko -1]['farba'] == 'siva':
+            if aisef_siva == True:
+                stav -= 5000
+                aistav += 5000
+                hodnotavstupenia += 5000
+        if [pozemky][policko -1]['farba'] == 'fialova':
+            if aisef_fialova == True:
+                stav -= 5000
+                aistav += 5000
+                hodnotavstupenia += 5000
+        if [pozemky][policko -1]['farba'] == 'hneda':
+            if aisef_hneda == True:
+                stav -= 5000
+                aistav += 5000
+                hodnotavstupenia += 5000
+        if [pozemky][policko -1]['farba'] == 'zlta':
+            if aisef_zlta == True:
+                stav -= 8000
+                aistav += 8000
+                hodnotavstupenia += 8000
+        if [pozemky][policko -1]['farba'] == 'modra':
+            if aisef_modra == True:
+                stav -= 8000
+                aistav += 8000
+                hodnotavstupenia += 8000
+        if [pozemky][policko -1]['farba'] == 'zelena':
+            if aisef_zelena == True:
+                stav -= 8000
+                aistav += 8000
+                hodnotavstupenia += 8000
+        
+        print(f'Platíš AI za vstúpenie na jeho pozemok {hodnotavstupenia} kčs.')
+    
     if int(len(farbahod('ruzova'))) > 0:
         print(f"Ružových pozemkov máš {int(len(farbahod('ruzova')))}.")
     if int(len(farbahod('siva'))) > 0:
@@ -661,10 +703,52 @@ while True:
 
     if aipolicko in hracove_políčka:
         hodnoita = int(policka_detaily[aipolicko - 1]['pozemok'])
-        hodnotastupenia = pozemky[hodnoita - 1]['poplatok']
-        aistav -= hodnotastupenia
-        print(f'AI ti stúpilo na pozemok. Zaplatilo ti {hodnotastupenia}.')
-        stav += hodnotastupenia
+        hodnotavstupenia = pozemky[hodnoita - 1]['poplatok']
+        aistav -= hodnotavstupenia
+        stav += hodnotavstupenia
+
+        if [pozemky][policko -1]['farba'] == 'ruzova':
+            if sef_ruzova == True:
+                aistav -= 2000
+                stav += 2000
+                hodnotavstupenia += 2000
+        if [pozemky][policko -1]['farba'] == 'oranzova':
+            if sef_oranzova == True:
+                aistav -= 2000
+                stav += 2000
+                hodnotavstupenia += 2000
+        if [pozemky][policko -1]['farba'] == 'siva':
+            if sef_siva == True:
+                aistav -= 5000
+                stav += 5000
+                hodnotavstupenia += 5000
+        if [pozemky][policko -1]['farba'] == 'fialova':
+            if sef_fialova == True:
+                aistav -= 5000
+                stav += 5000
+                hodnotavstupenia += 5000
+        if [pozemky][policko -1]['farba'] == 'hneda':
+            if sef_hneda == True:
+                aistav -= 5000
+                stav += 5000
+                hodnotavstupenia += 5000
+        if [pozemky][policko -1]['farba'] == 'zlta':
+            if sef_zlta == True:
+                aistav -= 8000
+                aistav += 8000
+                hodnotavstupenia += 8000
+        if [pozemky][policko -1]['farba'] == 'modra':
+            if sef_modra == True:
+                aistav -= 8000
+                stav += 8000
+                hodnotavstupenia += 8000
+        if [pozemky][policko -1]['farba'] == 'zelena':
+            if sef_zelena == True:
+                aistav -= 8000
+                stav += 8000
+                hodnotavstupenia += 8000
+        
+        print(f'Platí hráčovi za vstúpenie na jeho pozemok {hodnotavstupenia} kčs.')
 
     typ_policka = (zistenie_typu_policka(aipolicko))
     print(f"AI je na políčku {aipolicko} ktoré je {typ_policka}.")
