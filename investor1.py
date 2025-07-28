@@ -14,6 +14,7 @@ hracove_statie = 0
 ai_statie = 0
 hrac_stoji = False
 ai_stoji = False
+vykupne_za_unos_owner = ''
 
 sef_ruzova = False
 sef_siva = False
@@ -196,22 +197,57 @@ def multiply_money(kolko):
     global stav
     stav = stav * kolko
 def add_money(kolko):
-    global stav
-    stav = stav + kolko
+    if kolko > 0:
+        global stav
+        stav = stav + kolko
+    else:
+        if vykupne_za_unos_owner == 'hrac':
+            a = input("Chceš zaplatiť? (y/n) ")
+            if a.lower == 'y':
+                global stav
+                stav = stav + kolko
+            else:
+                print('Vyhol si sa platbe, ale strácaš kartičku.')
+                vykupne_za_unos_owner = ''
+        else:
+            global stav
+            stav = stav + kolko
+
 def zivel(kolko):
-    global stav
+    if vykupne_za_unos_owner != 'hrac':
+        global stav
 
-    sukrpoz = {p["cislo"] for p in súkromné_pozemky}
+        sukrpoz = {p["cislo"] for p in súkromné_pozemky}
 
-    global cenyzivel1
-    cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
-    #################################################################
-    sukrfir = {p["cislo"] for p in súkromné_pozemky}
+        global cenyzivel1
+        cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
+        #################################################################
+        sukrfir = {p["cislo"] for p in súkromné_pozemky}
 
-    global cenyzivel2
-    cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
-        
-    stav = stav - ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+        global cenyzivel2
+        cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
+            
+        stav = stav - ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+    else:
+        a = input('Chceš zaplatiť? (y/n) ')
+        if a.lower() == 'y':
+            global stav
+
+            sukrpoz = {p["cislo"] for p in hracove_pozemky}
+
+            global cenyzivel1
+            cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
+            #################################################################
+            sukrfir = {p["cislo"] for p in hracove_firmy}
+
+            global cenyzivel2
+            cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
+                
+            stav = stav - ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+        else:
+            print('Vyhol si sa platbe, ale strácaš kartičku.')
+            vykupne_za_unos_owner = ''
+
 def vrat_sa_o_policko_spat(kolko):
     global policko
     if policko - kolko >= 1:
@@ -264,6 +300,8 @@ def vykupne():
         global hracove_statie
         hracove_statie = 3
         print("Stojíš tri kolá.")
+    vykupne_za_unos_owner = 'hrac'
+    print('Dostal si kartičku s výkupným. Môžeš si ju nechať a potom neplatiť paragrafy, alebo ju môžeš predať.')
 #vykupne za unos - bud zaplat 250000 alebo stoj tri kola a potom funguje ako zeleny dolnik a odovzdas ho na kopku. mozes ho predat.
 
 paragrafy = [{'cislo': '1','text': 'Obchod sa ti nedarí. Vyplať banke 20000.', 'akcia': lambda: add_money(-20000)},
@@ -291,22 +329,52 @@ def aimultiply_money(kolko):
     global aistav
     aistav = stav * kolko
 def aiadd_money(kolko):
-    global aistav
-    aistav = stav + kolko
+    if kolko > 0:
+        global aistav
+        aistav = aistav + kolko
+    else:
+        if vykupne_za_unos_owner == 'ai':
+            print('Vyhol sa platbe, ale stráca kartičku.')
+            vykupne_za_unos_owner = ''
+        else: 
+            global aistav
+            aistav = aistav + kolko
+
 def aizivel(kolko):
-    global aistav
+    if vykupne_za_unos_owner != 'ai':
+        global aistav
 
-    sukrpoz = {p["cislo"] for p in ai_pozemky}
+        sukrpoz = {p["cislo"] for p in ai_pozemky}
 
-    global cenyzivel1
-    cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
-    #################################################################
-    sukrfir = {p["cislo"] for p in ai_firmy}
+        global cenyzivel1
+        cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
+        #################################################################
+        sukrfir = {p["cislo"] for p in ai_firmy}
 
-    global cenyzivel2
-    cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
-        
-    stav = stav - ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+        global cenyzivel2
+        cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
+            
+        aistav -= ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+    else:
+        a = input('Chceš zaplatiť? (y/n) ')
+        if a.lower() == 'y':
+            global aistav
+
+            sukrpoz = {p["cislo"] for p in ai_pozemky}
+
+            global cenyzivel1
+            cenyzivel1 = [p["cena"] for p in pozemky if p["cislo"] in sukrpoz]
+            #################################################################
+            sukrfir = {p["cislo"] for p in ai_firmy}
+
+            global cenyzivel2
+            cenyzivel2 = [p["cena"] for p in firmy if p["cislo"] in sukrfir]
+                
+            aistav -= ((cenyzivel1 * kolko) + (cenyzivel2 * kolko))
+        else:
+            print('Vyhol sa platbe, ale stráca kartičku.')
+            vykupne_za_unos_owner = ''
+            
 
 def aivrat_sa_o_policko_spat(kolko):
     global aipolicko
@@ -343,14 +411,26 @@ def aivyplatia():
     print(f"Na účte máš teraz {stav} kčs.")
     
 def aiunos_alebo():
-    odpoved = input("Čo si teda vyberieš? 1/2 ")
-    if odpoved == "1":
-        global stav
-        stav = stav - 15000
-        print(f"Na účte máš teraz {stav} kčs.")
-    elif odpoved == "2":
-        global statie
-        statie = 3
+    if aistav > 20000:
+        global aistav
+        aistav = aistav - 15000
+        print(f"Na účte má teraz {aistav} kčs.")
+    else:
+        global ai_statie
+        ai_statie = 3
+
+def vykupne():
+    global vykupne_za_unos_owner
+    if aistav > 255000:
+        global aistav
+        aistav = aistav - 250000
+        print(f"Na účte má teraz {aistav} kčs.")
+    else:
+        global ai_statie
+        ai_statie = 3
+        print("Stojíš tri kolá.")
+    vykupne_za_unos_owner = 'ai'
+    print('Dostal kartičku s výkupným. Môže si ju nechať a potom neplatiť paragrafy, alebo ju môže predať.')
 
 aiparagrafy = [{'cislo': '1','text': 'Obchod sa ti nedarí. Vyplať banke 20000.', 'akcia': lambda: aiadd_money(-20000)},
             {'cislo': '2','text': 'Daňové priznanie - zaplať banke 10% z hotovosti.', 'akcia': lambda: aimultiply_money(0.9)},
