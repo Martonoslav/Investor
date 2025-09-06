@@ -5,6 +5,61 @@ init()  # Initialize colorama
 
 print('Loading sklearn module...')
 from sklearn.tree import DecisionTreeClassifier
+
+X = [
+[84976, 6369, 4],
+[46923, 39392, 4],
+[185900, 23517, 3],
+[69227, 18284, 4],
+[20000, 15000, 1],
+[1000, 50000, 1],
+[20000, 15000, 4],
+[4865, 4000, 2],
+[34586, 32000, 3],
+[75508, 32949, 3],
+[30364, 25660, 4],
+[45211, 30286, 1],
+[49837,43063,3],
+[37315,11458,1],
+[79647,40967,4],
+[25106,24647,4],
+[184000,40000,4]
+]
+# Výstupy: 1 = kúpiť, 0 = nekúpiť
+y = [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1,0,1,0,0,1]
+model1 = DecisionTreeClassifier()
+model1.fit(X, y)
+
+#xhodnota, xcena a aistav
+X1 = [ 
+[11000, 11000, 50000],
+[11000, 33000, 100000],
+[11000, 11000, 10999],
+[36935, 38048, 69164],
+[99304, 189494, 143678],
+[94086, 198245, 404237],
+[23872, 65597, 164422],
+[75596, 213546, 13563],
+[55798, 115517, 127287],
+[74196, 138344, 315262],
+[135909, 321160, 206],
+[46870, 64163, 419135],
+[55591, 130243, 261253],
+[51283, 47788, 97459],
+[95677, 104872, 147176],
+[145408, 374955, 345995],
+[59106, 70185, 435923],
+[41228, 63907, 444326],
+[23202, 13541, 223550],
+[134521, 87041, 397694],
+[55000, 200000, 200000],
+]
+# Výstupy: 1 = kúpiť, 0 = nekúpiť
+y1 = [1,0,0,1,0,0,0,0,0,1,0,1,0,1,1,0,1,1,1,1,0]
+
+model2 = DecisionTreeClassifier()
+model2.fit(X1, y1)
+
 print('sklearn module loaded.')
 
 import os
@@ -580,38 +635,24 @@ def AIkontrola_sefa():
 def farbahodai(farba_filter):
     return [p for p in pozemky if p["farba"] == farba_filter and p["cislo"] in ai_pozemky]
 
-X = [
-[84976, 6369, 4],
-[46923, 39392, 4],
-[185900, 23517, 3],
-[69227, 18284, 4],
-[20000, 15000, 1],
-[1000, 50000, 1],
-[20000, 15000, 4],
-[4865, 4000, 2],
-[34586, 32000, 3],
-[75508, 32949, 3],
-[30364, 25660, 4],
-[45211, 30286, 1],
-[49837,43063,3],
-[37315,11458,1],
-[79647,40967,4],
-[25106,24647,4],
-[184000,40000,4]
-]
-# Výstupy: 1 = kúpiť, 0 = nekúpiť
-y = [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1,0,1,0,0,1]
-
-model1 = DecisionTreeClassifier()
-model1.fit(X, y)
-
 def aivyber_paragrafu():
     global random_index
     random_index = random.randrange(len(aiparagrafy))
     print(f'paragraf má {random_index}')
     print(aiparagrafy[random_index]["text"])
     aiparagrafy[random_index]["akcia"]()
-#!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!##
+
+def obchodovanie_s_polickom():
+    global xhodnota
+    while True:
+        xpolicko = input('S ktorým políčkom chceš obchodovať?')
+        if xpolicko in hracove_políčka:
+            xpozemok = policka_detaily[xpolicko - 1]['pozemok']() #cislo pozemku na policku
+            xfirma = policka_detaily[xpolicko - 1]['firma']()#cislo firmy na policku
+            xhodnota = pozemky[xpozemok]['cena']() + firmy[xfirma]['cena']()
+            xcena = input(f'Za akú cenu chceš predať polícko {xpolicko}, ktore má hodnotu {xhodnota}.')
+               
+#!#!##!#!#!#!#!#!#!###!#!##!!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!##
 aipolicko = 1
 aipohyb()
 os.system('cls')
@@ -783,7 +824,32 @@ while True:
 
         elif vstup.lower() == "sex":
             print(policka_detaily)
+        
+        elif vstup.lower() == 'obchodovat':
+            if vykupne_za_unos_owner == 'hrac':
+                if input("Chceš obchodovať s pozemkami alebo s kartičkou výkupné za únos? A/B").lower() == 'a':
+                    while True:
+                        xpolicko = input('S ktorým políčkom chceš obchodovať?')
+                        xpolicko = int(xpolicko)
+                        if xpolicko in hracove_políčka:
+                            break
+                    xpozemok = policka_detaily[xpolicko - 1]['pozemok'] #cislo pozemku na policku
+                    xpozemok = int(xpozemok)
+                    print(f'pozemok: {xpozemok}')
+                    xfirma = policka_detaily[xpolicko - 1]['firma']#cislo firmy na policku
+                    xfirma = int(xfirma)
+                    print(f'firma: {xfirma}')
+                    xhodnota = pozemky[xpozemok - 1]['cena'] + firmy[xfirma - 1]['cena']
+                    while True:
+                        xcena = input(f'Za akú cenu chceš predať polícko {xpolicko}, ktore má hodnotu {xhodnota}? \n')
 
+                        aisituacia1 = [[int(xhodnota), int(xcena), int(aistav)]]
+                        print(aisituacia1)
+                        rozhodnutie = model2.predict(aisituacia1)[0]
+                        print("kupit" if rozhodnutie == 1 else "preskocit")
+                        policka_detaily[xpolicko - 1]['vlastnik'] = 'ai'
+                        hracove_políčka.remove(xpolicko)
+                        ai_políčka.append(xpolicko) 
         kvarteto = True
     else:
         hracove_statie -= 1
