@@ -642,15 +642,40 @@ def aivyber_paragrafu():
     print(aiparagrafy[random_index]["text"])
     aiparagrafy[random_index]["akcia"]()
 
-def obchodovanie_s_polickom():
-    global xhodnota
+def obchodovanie_s_polickomhrac():
     while True:
         xpolicko = input('S ktorým políčkom chceš obchodovať?')
+        xpolicko = int(xpolicko)
         if xpolicko in hracove_políčka:
-            xpozemok = policka_detaily[xpolicko - 1]['pozemok']() #cislo pozemku na policku
-            xfirma = policka_detaily[xpolicko - 1]['firma']()#cislo firmy na policku
-            xhodnota = pozemky[xpozemok]['cena']() + firmy[xfirma]['cena']()
-            xcena = input(f'Za akú cenu chceš predať polícko {xpolicko}, ktore má hodnotu {xhodnota}.')
+            break
+    xpozemok = policka_detaily[xpolicko - 1]['pozemok'] #cislo pozemku na policku
+    xpozemok = int(xpozemok)
+    print(f'pozemok: {xpozemok}')
+    xfirma = policka_detaily[xpolicko - 1]['firma']#cislo firmy na policku
+    xfirma = int(xfirma)
+    print(f'firma: {xfirma}')
+    xhodnota = pozemky[xpozemok - 1]['cena'] + firmy[xfirma - 1]['cena']
+
+    xcena = input(f'Za akú cenu chceš predať polícko {xpolicko}, ktore má hodnotu {xhodnota}? \n')
+    aisituacia1 = [[int(xhodnota), int(xcena), int(aistav)]]
+    print(aisituacia1)
+    rozhodnutie = model2.predict(aisituacia1)[0]
+    print("kupit" if rozhodnutie == 1 else "preskocit")
+    if rozhodnutie == 1:
+        policka_detaily[xpolicko - 1]['vlastnik'] = 'ai'
+        hracove_políčka.remove(xpolicko)
+        ai_políčka.append(xpolicko) 
+
+def obchodovanie_s_vykupnymhrac():
+    xcena = input(f'Za akú cenu chceš predať kartičku výkupné za únos? \n')
+
+    aisituacia1 = [[25000, int(xcena), int(aistav)]]
+    print(aisituacia1)
+    rozhodnutie = model2.predict(aisituacia1)[0]
+    print("kupit" if rozhodnutie == 1 else "preskocit")
+    if rozhodnutie == 1:
+        global vykupne_za_unos_owner
+        vykupne_za_unos_owner = 'ai'
                
 #!#!##!#!#!#!#!#!#!###!#!##!!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!###!#!##!#!#!#!#!#!#!##
 aipolicko = 1
@@ -828,28 +853,12 @@ while True:
         elif vstup.lower() == 'obchodovat':
             if vykupne_za_unos_owner == 'hrac':
                 if input("Chceš obchodovať s pozemkami alebo s kartičkou výkupné za únos? A/B").lower() == 'a':
-                    while True:
-                        xpolicko = input('S ktorým políčkom chceš obchodovať?')
-                        xpolicko = int(xpolicko)
-                        if xpolicko in hracove_políčka:
-                            break
-                    xpozemok = policka_detaily[xpolicko - 1]['pozemok'] #cislo pozemku na policku
-                    xpozemok = int(xpozemok)
-                    print(f'pozemok: {xpozemok}')
-                    xfirma = policka_detaily[xpolicko - 1]['firma']#cislo firmy na policku
-                    xfirma = int(xfirma)
-                    print(f'firma: {xfirma}')
-                    xhodnota = pozemky[xpozemok - 1]['cena'] + firmy[xfirma - 1]['cena']
-                    while True:
-                        xcena = input(f'Za akú cenu chceš predať polícko {xpolicko}, ktore má hodnotu {xhodnota}? \n')
+                    obchodovanie_s_polickomhrac()
+                else: 
+                    obchodovanie_s_vykupnymhrac()
+            else:
+                obchodovanie_s_polickomhrac()
 
-                        aisituacia1 = [[int(xhodnota), int(xcena), int(aistav)]]
-                        print(aisituacia1)
-                        rozhodnutie = model2.predict(aisituacia1)[0]
-                        print("kupit" if rozhodnutie == 1 else "preskocit")
-                        policka_detaily[xpolicko - 1]['vlastnik'] = 'ai'
-                        hracove_políčka.remove(xpolicko)
-                        ai_políčka.append(xpolicko) 
         kvarteto = True
     else:
         hracove_statie -= 1
